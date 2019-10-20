@@ -9,7 +9,6 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -96,7 +95,7 @@ public class FluxoService {
 		
 		// Cria o objeto JasperReport com o Stream do arquivo jasper
 		JasperReport jasperReport = (JasperReport) JRLoader.loadObject(jasperStream);
-		// Passa para o JasperPrint o relatório, os parâmetros e a fonte dos dados, no caso uma conexão ao banco de dados
+		// Passa para o JasperPrint o relatório e os parâmetros
 		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros);
 
 		// Configura a resposta para o tipo PDF
