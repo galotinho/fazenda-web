@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.sistema.fazenda-web</groupId>
-	<artifactId>sistema</artifactId>
+	<artifactId>fazenda-web</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>fazenda-web</name>
 	<description>Sistema Fazenda</description>
