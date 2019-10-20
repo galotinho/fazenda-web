@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
+	  layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+		<main role="main">
+
+		<section class="jumbotron text-center mt-5">						
+			<div class="container">
+				<h1 class="jumbotron-heading">Sistema de Controle de Produçao Rural</h1>
+				<p class="lead text-muted">Gerenciando a produção de sua fazenda</p>				
+			</div>
+		</section>
+		
+		<div class="album py-5 bg-light">
+			<div class="container">
+				<div class="d-flex justify-content-center">
+					<div class="col-md-8">
+						<div th:replace="fragments/alert :: alerta-sucesso"></div>
+
+						<form th:action="@{/propriedade/salvar}"
+								th:object="${propriedade}" method="POST" class="was-validated" autocomplete="off">
+							
+							<div class="input-group mb-3">
+							  <div class="input-group-prepend">
+							    <label for="proprietario">Proprietário</label> 
+							  </div>
+							  <div id="proprietario" class="input-group">
+								  <select class="custom-select" id="proprietarios" th:field="*{usuario.id}">
+								    
+								  </select>
+								  <div class="invalid-feedback">Proprietário é requerido.</div>
+							  </div>
+							</div>	
+							
+							<div class="mb-3">
+								<label for="nome">Nome da Propriedade</label> 
+								<input type="text" class="form-control" id="nome"
+										th:field="*{nome}" placeholder="Insira o nome" required />
+								<div class="invalid-feedback">Nome da Propriedade é requerida</div>
+							</div>
+							
+							<div class="mb-3">
+								<label for="cnpj">CNPJ</label> 
+								<input type="text" class="form-control" id="cnpj"
+										th:field="*{cnpj}" placeholder="Insira o cnpj" required />
+								<div class="invalid-feedback">CNPJ da Propriedade é requerido</div>
+							</div>
+
+							<div class="mb-3">
+								<label for="endereco">Endereço Completo</label> 
+								<input type="text" class="form-control" id="endereco"
+										th:field="*{endereco}" placeholder="Insira o endereço" required />
+								<div class="invalid-feedback">Endereço Completo é requerido</div>
+							</div>
+							
+							<input type="hidden" th:field="*{id}"> 
+							<div class="form-group row">
+								<div class="col-sm-10">
+									<button type="submit" class="btn btn-primary"
+										data-toggle="tooltip" data-placement="right" title="Salvar">
+										<i class="fas fa-save"></i>
+									</button>
+								</div>
+							</div>
+						</form>
+						<hr/>
+						
+						<h2>Lista de Propriedades</h2>
+						
+						<table id="table-fazendas" class="table table-sm table-striped table-bordered nowrap" style="width:100%">
+						  <thead class="thead-dark">
+						    <tr>
+						      <th scope="col">#</th>
+						      <th scope="col">Proprietário</th>
+						      <th scope="col">Propriedade</th>
+						      <th scope="col">CNPJ</th>
+						      <th scope="col">Editar</th>
+						      <th scope="col">Excluir</th>
+						    </tr>
+						  </thead>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		</main>
+
+	</section>
+	<script	th:src="@{/js/fazendas.js?(v=${version})}" th:fragment="js"></script>
+	<script th:inline="javascript" th:fragment="inlinescript">
+	/*[# th:if="${propriedade.usuario != null}"]*/
+	$(document).ready(function() {
+		$.get('/propriedade/proprietario/listar' , function( result ) {
+	    	$.each(result, function (k, v) {
+	    		if(v.id == [[${propriedade.usuario.id}]]){
+	    			$("#proprietarios").append( 
+	        				'<option name= "op" class="op" value="'+ v.id +'" selected="selected">'+ v.nome + '</option>'
+	        		);
+	    		}else{
+	    			$("#proprietarios").append( 
+	        				'<option name= "op" class="op" value="'+ v.id +'">'+ v.nome + '</option>'
+	        		);
+	    		}
+    				            			
+	    	  });
+	    	});
+	    });
+	/*[/]*/	
+	
+	/*[# th:if="${propriedade.usuario == null}"]*/
+	$(document).ready(function() {
+		$.get('/propriedade/proprietario/listar' , function( result ) {
+	    	$.each(result, function (k, v) {	    		
+    			$("#proprietarios").append( 
+        				'<option name= "op" class="op" value="'+ v.id +'">'+ v.nome + '</option>'
+        		);	    			            			
+	    	  });
+	    	});
+	    });
+	/*[/]*/	
+	</script>
+</body>
+</html>

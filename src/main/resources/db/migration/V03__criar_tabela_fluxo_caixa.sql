@@ -1,0 +1,9 @@
+CREATE TABLE fluxo (
+  id BIGINT AUTO_INCREMENT NOT NULL,
+  data_operacao date NOT NULL,
+  item VARCHAR(255) NOT NULL,
+  valor DECIMAL(10,2) NOT NULL,
+  natureza VARCHAR(255) NOT NULL,
+  id_propriedade BIGINT NOT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

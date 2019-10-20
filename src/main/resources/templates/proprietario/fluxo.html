@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
+	  layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+		<main role="main">
+
+		<section class="jumbotron text-center mt-5">						
+			<div class="container">
+				<h1 class="jumbotron-heading">Sistema de Controle de Produçao Rural</h1>
+				<p class="lead text-muted">Gerenciando a produção de sua fazenda</p>				
+			</div>
+		</section>
+		
+		<div class="album py-3 bg-light">
+			<div class="container">
+			<div th:replace="fragments/alert :: alerta-sucesso"></div>
+				
+				<div class="d-flex justify-content-center">
+					<div class="col-md-8 offset-4">
+						
+						<form th:action="@{/fluxo/salvar}"
+								th:object="${fluxo}" method="POST" class="was-validated" autocomplete="off">
+							
+							<div class="form-row">								
+								<div class="form-group col-md-6">
+									<label for="natureza">Propriedade</label>
+									<div id="propriedade" class="input-group">
+									  <select class="custom-select" id="propriedades" th:field="*{propriedade.id}">
+									    
+									  </select>
+									  <div class="invalid-feedback">Propriedade é requerida.</div>
+								  	</div>								
+								</div>
+							</div>
+							
+							<div class="form-row" >								
+							<div class="form-group col-md-6">
+								<label for="nome">Data</label> 
+								<input type="date" class="form-control" id="data"
+										th:field="*{data}" placeholder="Escolha a data" required />
+								<div class="invalid-feedback">Data é requerida</div>
+							</div>
+							</div>
+							
+							<div class="form-row">								
+								<div class="form-group col-md-6">
+									<label for="item">Item</label> 
+									<input type="text" class="form-control" id="item"
+											th:field="*{item}" placeholder="Insira a descrição do item" required />
+									<div class="invalid-feedback">Descrição do item é requerido</div>
+								</div>
+							</div>
+							<div class="form-row">								
+								<div class="form-group col-md-6">
+									<label for="valor">Valor</label>
+									<div class="input-group-prepend">
+										<span class="input-group-text" id="validationTooltipUsernamePrepend">R$</span>
+										<input type="text" class="form-control" id="valor"
+										th:field="*{valor}" placeholder="Insira o valor" required />
+									</div>
+									
+									<div class="invalid-feedback">Valor é requerido</div>
+								</div>
+							</div>
+							
+							<div class="form-row">								
+								<div class="form-group col-md-6">
+									<label for="natureza">Receita/Despesa</label>
+									<select id="natureza" class="custom-select" size="2"
+											th:field="*{natureza}" required>
+										<option id="receita" value="RECEITA">Receita</option>
+										<option value="DESPESA">Despesa</option>
+									</select>
+									<div class="invalid-feedback">Receita/Despesa é requerido.</div>
+								</div>
+							</div>
+							
+							<input type="hidden" th:field="*{id}"> 
+							<div class="form-group row">
+								<div class="col-sm-10">
+									<button type="submit" class="btn btn-primary"
+										data-toggle="tooltip" data-placement="right" title="Salvar">
+										<i class="fas fa-save"></i>
+									</button>
+								</div>
+							</div>
+						</form>
+												
+					</div>
+				</div>
+			</div>
+		</div>		
+				
+		<div class="album bg-light">
+			<div class="container">
+				<div class="form-row">								
+					<div class="form-group col-md-12">
+					<hr/>
+						<h2>Lista de Operações Financeiras</h2>						
+						<table id="table-fluxo" class="table table-sm table-striped table-bordered nowrap" style="width:100%">
+						  <thead class="thead-dark">
+						    <tr>
+						      <th scope="col">#</th>
+						      <th scope="col">Data</th>
+						      <th scope="col">Propriedade</th>
+						      <th scope="col">Item</th>
+						      <th scope="col">Valor</th>
+						      <th scope="col">Natureza</th>
+						      <th scope="col">Editar</th>
+						      <th scope="col">Excluir</th>
+						    </tr>
+						  </thead>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		</main>
+
+	</section>
+	<script	th:src="@{/js/fluxo.js?(v=${version})}" th:fragment="js"></script>
+	<script	th:src="@{/js/jquery.mask.min.js?(v=${version})}" th:fragment="js"></script>
+	<script th:inline="javascript" th:fragment="inlinescript">
+	/*[# th:if="${fluxo.id == null}"]*/
+	$(document).ready(function() {
+		$('#receita').attr('selected', 'selected');  
+	});	
+	
+ 	$(document).ready(function() {
+		$.get('/propriedade/listar/' , function( result ) {
+		   	$.each(result, function (k, v) {	    		
+		  			$("#propriedades").append( 
+		      				'<option name= "op" class="op" value="'+ v.id +'">'+ v.nome + '</option>'
+		      		);	    			            			
+		   	  });
+	   	});
+   });
+	/*[/]*/
+	
+	/*[# th:if="${fluxo.id != null}"]*/
+	$(document).ready(function() {
+		$.get('/propriedade/listar' , function( result ) {
+	    	$.each(result, function (k, v) {
+	    		if(v.id == [[${fluxo.propriedade.id}]]){
+	    			$("#propriedades").append( 
+	        				'<option name= "op" class="op" value="'+ v.id +'" selected="selected">'+ v.nome + '</option>'
+	        		);
+	    		}else{
+	    			$("#propriedades").append( 
+	        				'<option name= "op" class="op" value="'+ v.id +'">'+ v.nome + '</option>'
+	        		);
+	    		}
+    				            			
+	    	  });
+	    	});
+	    });
+	/*[/]*/
+	
+	
+    $(document).ready(function(){
+    	$('#valor').mask('#.##0,00', {reverse: true});
+	});
+	
+   
+	
+	</script>
+</body>
+</html>
