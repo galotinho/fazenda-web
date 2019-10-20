@@ -46,9 +46,6 @@ public class FluxoService {
 		
 	@Autowired
 	private Datatables dataTables;
-
-	@Autowired
-	private DataSource dataSource;
 	
 	@Transactional(readOnly=false)
 	public void salvar(Fluxo fluxo) {
@@ -100,7 +97,7 @@ public class FluxoService {
 		// Cria o objeto JasperReport com o Stream do arquivo jasper
 		JasperReport jasperReport = (JasperReport) JRLoader.loadObject(jasperStream);
 		// Passa para o JasperPrint o relatório, os parâmetros e a fonte dos dados, no caso uma conexão ao banco de dados
-		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, dataSource.getConnection());
+		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros);
 
 		// Configura a resposta para o tipo PDF
 		response.setContentType("application/pdf");
