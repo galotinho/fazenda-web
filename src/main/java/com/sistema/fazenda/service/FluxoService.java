@@ -44,6 +44,7 @@ public class FluxoService {
 	@Autowired
 	private PropriedadeRepository propriedadeRepository;
 	
+	@Autowired
 	private HikariDataSource hikariDataSource;
 		
 	@Autowired
