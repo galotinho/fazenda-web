@@ -23,6 +23,7 @@ import com.sistema.fazenda.model.Usuario;
 import com.sistema.fazenda.repository.FluxoRepository;
 import com.sistema.fazenda.repository.PropriedadeRepository;
 import com.sistema.fazenda.repository.UsuarioRepository;
+import com.zaxxer.hikari.HikariDataSource;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -43,6 +44,9 @@ public class FluxoService {
 	@Autowired
 	private PropriedadeRepository propriedadeRepository;
 	
+	@Autowired
+	private HikariDataSource hikariDataSource;
+		
 	@Autowired
 	private Datatables dataTables;
 	
@@ -96,7 +100,7 @@ public class FluxoService {
 		// Cria o objeto JasperReport com o Stream do arquivo jasper
 		JasperReport jasperReport = (JasperReport) JRLoader.loadObject(jasperStream);
 		// Passa para o JasperPrint o relatório e os parâmetros
-		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros);
+		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, hikariDataSource.getConnection());
 
 		// Configura a resposta para o tipo PDF
 		response.setContentType("application/pdf");
