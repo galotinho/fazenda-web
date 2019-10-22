@@ -18,7 +18,7 @@
 		<div class="album py-3 bg-light">
 			<div class="container">
 				<div class="d-flex justify-content-center">
-					<div class="col-md-8 offset-4">
+					<div class="col-md-12">
 						<form th:action="@{/fluxo/relatorio}"
 								th:object="${fluxo}" method="POST" class="was-validated" autocomplete="off">
 							
@@ -32,10 +32,7 @@
 									  <div class="invalid-feedback">Propriedade é requerida.</div>
 								  	</div>								
 								</div>
-							</div>
-							
-							
-							<div class="form-row">								
+															
 								<div class="form-group col-md-6">
 									<label for="ano">Ano</label>
 									<select id="ano" class="custom-select"
