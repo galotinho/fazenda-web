@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
@@ -26,6 +27,7 @@ import com.sistema.fazenda.repository.UsuarioRepository;
 import com.zaxxer.hikari.HikariDataSource;
 
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -93,6 +95,7 @@ public class FluxoService {
 		parametros.put("PROPRIETARIO", proprietario.get().getNome());
 		parametros.put("PROPRIEDADE_NOME", propriedade.get().getNome());
 		parametros.put("ANO", fluxo.getData().getYear());
+		parametros.put(JRParameter.REPORT_LOCALE, new Locale("pt", "BR"));
 		
 		// Pega o arquivo .jasper localizado em resources
 		InputStream jasperStream = this.getClass().getResourceAsStream("/relatorios/resultado/Resultado.jasper");
